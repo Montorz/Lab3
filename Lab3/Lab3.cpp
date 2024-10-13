@@ -163,38 +163,52 @@ public:
 int main() {
     setlocale(LC_ALL, "Russian");
 
-    // Создание казино с 5 пользователями и 2 слотами
-    Casino casino(5, 2);
+    printf("Работа с классом User:\n");
+    User* user = new User(1, "Алексей", "alex123", "alexpass", "2024-10-13", 1500.0);
+    printf("ID: %d, Имя: %s, Баланс: %.2f\n", user->getId(), user->getName(), user->getBalance());
+    delete user;
 
-    // Добавление пользователей
-    casino.addUser(0, User(1, "Леха", "леха123", "password123", "2024-10-08", 1000.0));
-    casino.addUser(1, User(2, "Коля", "коля321", "password321", "2024-10-08", 500.0));
-    casino.addUser(2, User(3, "Маша", "masha789", "password789", "2024-10-09", 2000.0));
-    casino.addUser(3, User(4, "Иван", "ivan123", "ivanpass", "2024-10-10", 1500.0));
-    casino.addUser(4, User(5, "Ольга", "olga456", "olgapass", "2024-10-11", 3000.0));
+    printf("\nРабота с классом Slot:\n");
+    Slot* slot = new Slot(1, "Lucky 7", 100, 10, 0.95);
+    printf("Название: %s, Коэффициент выплат: %.2f\n", slot->getName(), slot->getPayoutRatio());
+    delete slot;
 
-    // Добавление слотов
-    casino.addSlot(0, Slot(1, "Lucky 7", 100, 10, 0.95));
-    casino.addSlot(1, Slot(2, "Fruit Machine", 50, 5, 1.20));
+    printf("\nРабота с классом Transaction:\n");
+    Transaction* transaction = new Transaction(1, 1, 100.0f, "2024-10-13 12:00");
+    printf("ID пользователя: %d, Сумма: %.2f, Время: %s\n",
+        transaction->getUserId(), transaction->getAmount(), "2024-10-13 12:00");
+    delete transaction;
 
-    // Создание и добавление записей
-    GameHistory history1(Slot(1, "Lucky 7", 100, 10, 0.95), User(1, "Леха", "леха123", "password123", "2024-10-08", 1000.0), 1, 100.0, 95.0, "2024-10-10");
-    GameHistory history2(Slot(2, "Fruit Machine", 50, 5, 1.20), User(2, "Коля", "коля321", "password321", "2024-10-08", 500.0), 2, 50.0, 60.0, "2024-10-11");
-    GameHistory history3(Slot(1, "Lucky 7", 100, 10, 0.95), User(3, "Маша", "masha789", "password789", "2024-10-09", 2000.0), 3, 150.0, 140.0, "2024-10-12");
+    printf("\nРабота с классом GameHistory:\n");
+    User player(2, "Борис", "boris123", "borispass", "2024-10-13", 2500.0);
+    Slot game(2, "Fruit Machine", 50, 5, 1.2);
+    GameHistory* history = new GameHistory(game, player, 1, 50.0f, 60.0f, "2024-10-13");
+    history->displayHistory();
+    delete history;
 
-    casino.addGameHistory(history1);
-    casino.addGameHistory(history2);
-    casino.addGameHistory(history3);
+    printf("\nМассив динамических объектов User:\n");
+    int userCount = 2;
+    User** users = new User * [userCount];
+    users[0] = new User(3, "Виктория", "viktoria789", "vikpass", "2024-10-13", 3500.0);
+    users[1] = new User(4, "Дмитрий", "dmitry456", "dmitrypass", "2024-10-13", 2200.0);
 
-    // Отображение всех записей
-    printf("Все записи истории игр:\n");
-    casino.displayGameHistories();
+    for (int i = 0; i < userCount; i++) {
+        printf("Имя: %s, Баланс: %.2f\n", users[i]->getName(), users[i]->getBalance());
+        delete users[i];
+    }
+    delete[] users;
 
-    // Транзакции
-    Transaction transaction1(1, 1, 100.0f, "2024-10-10 12:00");
-    printf("\nТранзакция:\n");
-    printf("ID транзакции: %d, ID пользователя: %d, Сумма: %.2f, Время: %s\n",
-        transaction1.getUserId(), transaction1.getUserId(), transaction1.getAmount(), "2024-10-10 12:00");
+
+    printf("\nДинамический массив объектов Slot:\n");
+    int slotCount = 2;
+    Slot* slotArray = new Slot[slotCount];
+    slotArray[0] = Slot(1, "Lucky 7", 100, 10, 0.95);
+    slotArray[1] = Slot(2, "Fruit Machine", 50, 5, 1.2);
+
+    for (int i = 0; i < slotCount; i++) {
+        printf("Название: %s, Коэффициент выплат: %.2f\n", slotArray[i].getName(), slotArray[i].getPayoutRatio());
+    }
+    delete[] slotArray;
 
     return 0;
 }
